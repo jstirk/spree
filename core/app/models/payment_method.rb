@@ -24,7 +24,7 @@ class PaymentMethod < ActiveRecord::Base
   end
 
   def self.available(display_on='both')
-    PaymentMethod.all.select { |p| p.active && (p.display_on == display_on.to_s || p.display_on.blank?) &&  (p.environment == Rails.env || p.environment.blank?) }
+    PaymentMethod.where([ 'active = ? AND (display_on = ? OR display_on IS NULL) AND (environment = ? OR environment IS NULL)', true, display_on, Rails.env ])
   end
 
   def self.active?
